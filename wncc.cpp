@@ -16,22 +16,23 @@ int indexcheck(int F[][5], int a, int b, vector<int>& roll) {
     }
 }//This function returns the index of the rollno.
 
-int checkeligibility(int F[][5], int g, int dif[][5000], vector<int>& roll) {
+int checkeligibility(int F[][5], int g,int f, int dif[][5000], vector<int>& roll) {
     for (int j = 0; j < 5; j++) {
         if (F[g][j] == -1||F[g][j]==0) {
             continue;
         }
         int i = indexcheck(F, g, j, roll);
 
-        if (dif[g][5 * (i) + j] >= 1) {
-            return 1;
+        if (dif[g][5 *(i) + f] >= 1) {
+            return j;
         }
+
     }
-    return 0;
+    return -1;
 }
 
 int isprojectpossible(int a, int F[][5], int dif[][5000], vector<int>& roll) {
-    int W = 0;
+    int W = 0; int Mentor[]={5,5,5,5,5};
     for (int i = 0; i < 5; i++) {
         if (F[a][i] == -1) {
             W++;
@@ -49,9 +50,11 @@ int isprojectpossible(int a, int F[][5], int dif[][5000], vector<int>& roll) {
             W++;
             continue;
         }
-        if (checkeligibility(F, a, dif, roll) == 0)
-            break;
-    }
+        int mulmen=checkeligibility(F, a,i, dif, roll);//mulmen retains the index of the already mentoring student
+        int* result = std::find(std::begin(Mentor), std::end(Mentor),mulmen);
+        if (mulmen!= -1 && (result == std::end(Mentor)))
+            {W++;Mentor[k]=mulmen;k++;continue;//To prevent from allocating multiple mentees to a mentor
+    }}
     if (W == 5) {
         return 1;
     } else {
@@ -68,12 +71,17 @@ void projectnumber(int F[][5], int dif[][5000], int B[][5], vector<int>& roll, i
     }
     if (Num > maxp) {
         maxp = Num;}
+
+
+
+
+
         for(int i=0;i<M;i++)
         { for(int j=0;j<5;j++){ if(B[i][j]==0) {F[i][j]= -1;}
                 else F[i][j]=0; } }
         // cout << "the no. of projects are " << Num << endl;
     }//This function stores the max no.of projects possible in maxp variable
-    
+
 
 
 void processCombination(const vector<int>& combination, int F[][5], int dif[][5000], int B[][5], vector<int>& roll, int M, int Y, int N) {
@@ -102,14 +110,14 @@ void generateCombinations(vector<int>& elements, int F[][5], int dif[][5000], in
     do {
         processCombination(elements, F, dif, B, roll, M, Y, N);
     } while (next_permutation(elements.begin(), elements.end()));
-}//This function generates all combinations of arrangements of rollno.s 
+}//This function generates all combinations of arrangements of rollno.s
 
 int main() {
-    int N;cout<<"Enter the no.of students";
+    int N;///cout<<"Enter the no.of students";
     cin >> N;
     int A[N][5];//stores the details of students
     vector<int> roll(N);
-    cout<<"Enter the details of students";
+    ///cout<<"Enter the details of students";
     for (int i = 0; i < N; i++) {
         cin >> roll[i];
         for (int j = 0; j < 5; j++) {
@@ -117,11 +125,11 @@ int main() {
         }
     }
 
-    int M;cout<<"Enter the no.of projects";
+    int M;///cout<<"Enter the no.of projects";
     cin >> M;
     string S[M];//string of project names
     int B[M][5];//stores the details of projects
-    cout<<"Enter the details of the projects";
+    ///cout<<"Enter the details of the projects";
     for (int i = 0; i < M; i++) {
         cin >> S[i];
         for (int j = 0; j < 5; j++) {
@@ -137,7 +145,7 @@ int main() {
             }
         }
     }
- 
+
     int k = 5 * N;
     int dif[M][5000];//It stores the diiference of skill level of student and required by the project
 
@@ -148,7 +156,7 @@ int main() {
         }
     }
 
-    int F[M][5];//it is the array in which combinations of rollno.s will be stored 
+    int F[M][5];//it is the array in which combinations of rollno.s will be stored
     for (int i = 0; i < M; i++) {
         for (int j = 0; j < 5; j++) {
             if (B[i][j] == 0) {
@@ -163,7 +171,7 @@ if(Count > N){for (int i = N; i <Count; i++) {
         roll.push_back(-2);}}
 //the code works if the no.of roles required is same as theno.ofstudents applied(Count=N)
 //Problem arises if Count > N.
-//In order to compensate for the size is increased for roll vector       
+//In order to compensate for the size is increased for roll vector
     if (Count>N){elements.resize(Count);//same is done for element vector
     for (int i=0;i<Count;i++){elements[i]=roll[i];}}
 else{
